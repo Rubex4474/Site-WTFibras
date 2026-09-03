@@ -43,20 +43,17 @@ export function HeroWater({
               width="140%"
               height="140%"
             >
+              {/* baseFrequency fixo — animar esse valor força o navegador a
+                  regerar o campo de ruído inteiro a cada frame, o que
+                  derrubava o FPS em celulares (feTurbulence + feDisplacementMap
+                  já são caros sozinhos, animados ficam proibitivos) */}
               <feTurbulence
                 type="fractalNoise"
-                baseFrequency="0.010 0.018"
+                baseFrequency="0.013 0.021"
                 numOctaves="2"
                 seed="7"
                 result="turb"
-              >
-                <animate
-                  attributeName="baseFrequency"
-                  dur="28s"
-                  values="0.010 0.018;0.017 0.026;0.010 0.018"
-                  repeatCount="indefinite"
-                />
-              </feTurbulence>
+              />
               <feDisplacementMap
                 in="SourceGraphic"
                 in2="turb"

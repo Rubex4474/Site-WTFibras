@@ -2,7 +2,7 @@
 
 import { motion, type MotionValue } from "framer-motion";
 
-const BUBBLE_COUNT = 46;
+const BUBBLE_COUNT = 26;
 
 // Mulberry32-style hash: only integer/multiply ops, so it is bit-identical
 // between server (Node) and client (browser) — Math.sin() is NOT guaranteed

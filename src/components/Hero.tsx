@@ -13,29 +13,7 @@ import {
 import { HeroWater } from "./HeroWater";
 import { HeroBubbles } from "./HeroBubbles";
 
-function LogoFace({
-  rotateY,
-  shineBackgroundPositionX,
-}: {
-  rotateY: MotionValue<number>;
-  shineBackgroundPositionX: MotionValue<string>;
-}) {
-  const shadeOpacity = useTransform(rotateY, (v) => {
-    const rad = (v * Math.PI) / 180;
-    return Math.max(0, Math.abs(Math.sin(rad)) - 0.25) * 0.55;
-  });
-
-  const maskStyle = {
-    WebkitMaskImage: "url(/images/logo-full.png)",
-    maskImage: "url(/images/logo-full.png)",
-    WebkitMaskSize: "contain",
-    maskSize: "contain",
-    WebkitMaskRepeat: "no-repeat",
-    maskRepeat: "no-repeat",
-    WebkitMaskPosition: "center",
-    maskPosition: "center",
-  } as const;
-
+function LogoFace({ rotateY }: { rotateY: MotionValue<number> }) {
   return (
     <motion.div
       className="absolute inset-0"
@@ -48,29 +26,6 @@ function LogoFace({
         sizes="180px"
         className="object-contain"
       />
-      {/* brilho metálico, recortado na silhueta da própria logo — o recorte
-          (propriedades estáticas de mask) fica num div puro; só a posição
-          do brilho, que é um MotionValue, vai no motion.div. Misturar as
-          duas coisas no mesmo style causava mismatch de hidratação. */}
-      <div className="absolute inset-0" style={maskStyle} aria-hidden>
-        <motion.div
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              "linear-gradient(75deg, transparent 30%, rgba(255,255,255,0.95) 50%, transparent 70%)",
-            backgroundSize: "260% 100%",
-            backgroundPositionX: shineBackgroundPositionX,
-            mixBlendMode: "overlay",
-          }}
-        />
-      </div>
-      {/* sombreamento dinâmico de volume, também recortado na silhueta */}
-      <div className="absolute inset-0" style={maskStyle} aria-hidden>
-        <motion.div
-          className="absolute inset-0 bg-black"
-          style={{ opacity: shadeOpacity }}
-        />
-      </div>
     </motion.div>
   );
 }
@@ -113,11 +68,6 @@ export function Hero() {
     mass: 0.6,
   });
   const rotateYBack = useTransform(rotateY, (v) => v + 180);
-  const shinePos = useTransform(rotateY, (v) => {
-    const rad = (v * Math.PI) / 90;
-    return 50 + Math.sin(rad) * 150;
-  });
-  const shineBackgroundPositionX = useMotionTemplate`${shinePos}%`;
 
   // Fundo: leve deriva de gradiente para dar profundidade ao pin
   const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
@@ -179,14 +129,8 @@ export function Hero() {
                 className="relative h-full w-full"
                 style={{ transformStyle: "preserve-3d" }}
               >
-                <LogoFace
-                  rotateY={rotateY}
-                  shineBackgroundPositionX={shineBackgroundPositionX}
-                />
-                <LogoFace
-                  rotateY={rotateYBack}
-                  shineBackgroundPositionX={shineBackgroundPositionX}
-                />
+                <LogoFace rotateY={rotateY} />
+                <LogoFace rotateY={rotateYBack} />
               </div>
             </div>
           </motion.div>
