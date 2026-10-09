@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Fraunces, Manrope } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
+
+const GA_ID = "G-RV8N5N0W6Y";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -29,6 +32,20 @@ export default function RootLayout({
     <html lang="pt-BR" className={`${fraunces.variable} ${manrope.variable}`}>
       <body className="font-body antialiased bg-cream text-brand-deep">
         {children}
+
+        {/* Google Analytics (gtag.js) */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_ID}');
+          `}
+        </Script>
       </body>
     </html>
   );
