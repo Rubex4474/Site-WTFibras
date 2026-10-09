@@ -11,6 +11,7 @@ import {
   FREE_SHIPPING_STATES_LABEL,
 } from "@/lib/products";
 import { cn } from "@/lib/utils";
+import { trackEvent, whatsappEventFor } from "@/lib/analytics";
 
 function CheckIcon({
   className,
@@ -252,6 +253,9 @@ export function ProductVideoCard({
         href={whatsappUrlFor(product)}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() =>
+          trackEvent(whatsappEventFor(product.slug), { spa: product.name })
+        }
         className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-[#0F3D2E] px-4 py-2.5 text-sm font-semibold text-cream transition-transform duration-300 hover:scale-[1.03] active:scale-[0.98]"
       >
         <WhatsAppIcon className="h-4 w-4 shrink-0" />
