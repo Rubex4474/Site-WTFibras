@@ -6,8 +6,29 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import {
   products,
   formatPrice,
+  includedItemsFor,
   FREE_SHIPPING_STATES_LABEL,
 } from "@/lib/products";
+
+function CheckIcon({
+  className,
+  style,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} style={style} fill="none" aria-hidden="true">
+      <path
+        d="m5 12.5 4.5 4.5L19 7.5"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 function TruckIcon({ className }: { className?: string }) {
   return (
@@ -143,11 +164,27 @@ export function ProductsScroll() {
                       em até {product.installments}x sem juros
                     </p>
 
+                    {/* o que já vem no valor */}
+                    <ul className="mt-2 flex flex-wrap gap-1.5 sm:mt-4 sm:gap-2">
+                      {includedItemsFor(product).map((item) => (
+                        <li
+                          key={item}
+                          className="inline-flex items-center gap-1 rounded-full bg-cream/10 px-2 py-0.5 text-[0.65rem] font-semibold text-cream sm:gap-1.5 sm:px-3 sm:py-1 sm:text-xs"
+                        >
+                          <CheckIcon
+                            className="h-3 w-3 shrink-0 sm:h-3.5 sm:w-3.5"
+                            style={{ color: product.colorSoft }}
+                          />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+
                     <p className="mt-2 max-w-md font-body text-xs leading-snug text-cream/75 sm:mt-5 sm:text-[0.95rem] sm:leading-relaxed">
                       {product.description}
                     </p>
                     <p className="mt-1 text-[0.65rem] text-cream/40 sm:mt-3 sm:text-xs">
-                      {product.dimensions} · {product.liters}L · {product.jets} jatos
+                      {product.dimensions} · {product.liters}L
                     </p>
 
                     <div
@@ -208,7 +245,7 @@ export function ProductsScroll() {
           </div>
 
           {/* indicador de progresso, decorativo */}
-          <div className="absolute bottom-10 left-6 flex gap-2 md:left-10">
+          <div className="absolute bottom-4 left-6 flex gap-2 sm:bottom-10 md:left-10">
             {products.map((product, i) => {
               const w = windowFor(i);
               const opacity = useTransform(

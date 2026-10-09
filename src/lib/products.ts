@@ -6,6 +6,14 @@ export const FREE_SHIPPING_HIGHLIGHT = "Minas Gerais";
 export const FREE_SHIPPING_STATES = ["SP", "RJ", "PR", "MT", "SC"];
 export const FREE_SHIPPING_STATES_LABEL = "MG, SP, RJ, PR, MT e SC";
 
+// Itens inclusos no valor — iguais em toda a linha; só o número de jatos
+// muda por modelo, então ele vem do próprio produto.
+export const INCLUDED_ITEMS = ["Aquecedor", "Cromoterapia", "Instalação"];
+
+export function includedItemsFor(product: Product) {
+  return [`${product.jets} jatos`, ...INCLUDED_ITEMS];
+}
+
 export function formatPrice(value: number) {
   return value.toLocaleString("pt-BR", {
     style: "currency",

@@ -7,9 +7,30 @@ import {
   type Product,
   formatPrice,
   whatsappUrlFor,
+  includedItemsFor,
   FREE_SHIPPING_STATES_LABEL,
 } from "@/lib/products";
 import { cn } from "@/lib/utils";
+
+function CheckIcon({
+  className,
+  style,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} style={style} fill="none" aria-hidden="true">
+      <path
+        d="m5 12.5 4.5 4.5L19 7.5"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -180,6 +201,23 @@ export function ProductVideoCard({
                 <p className="mt-1 text-xs font-semibold text-brand-deep/70">
                   em até {product.installments}x sem juros
                 </p>
+              </div>
+
+              <div className="rounded-2xl bg-brand-deep/5 px-4 py-3">
+                <p className="text-center text-[0.6rem] uppercase tracking-wide text-brand-deep/40">
+                  Incluso no valor
+                </p>
+                <ul className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1.5">
+                  {includedItemsFor(product).map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-center gap-1.5 text-xs font-semibold text-brand-deep/80"
+                    >
+                      <CheckIcon className="h-3.5 w-3.5 shrink-0" style={{ color: product.color }} />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               </div>
 
               <div
